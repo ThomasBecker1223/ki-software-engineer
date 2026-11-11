@@ -1,1 +1,33 @@
 @import 'tailwindcss';
+
+@theme {
+  --color-canvas: #f9fafb;
+  --color-surface: #ffffff;
+  --color-muted-surface: #f3f4f6;
+  --color-ink: #1f2937;
+  --color-ink-muted: #4b5563;
+  --color-accent: #1d4ed8;
+  --color-line: #d1d5db;
+  --color-action: #1d4ed8;
+  --color-action-hover: #1e40af;
+}
+
+:root[data-theme='dark'] {
+  --color-canvas: #111827;
+  --color-surface: #1f2937;
+  --color-muted-surface: #273449;
+  --color-ink: #f3f4f6;
+  --color-ink-muted: #cbd5e1;
+  --color-accent: #93c5fd;
+  --color-line: #64748b;
+  --color-action: #1d4ed8;
+  --color-action-hover: #1e40af;
+}
+
+@layer base {
+  body {
+    min-height: 100vh;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+}

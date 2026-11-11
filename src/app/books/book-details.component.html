@@ -1,0 +1,50 @@
+<div class="container mx-auto max-w-5xl px-4 py-12">
+  <a
+    routerLink="/"
+    class="mb-8 inline-block rounded text-accent underline focus-visible:outline-2 focus-visible:outline-offset-4"
+    >Back to books</a
+  >
+  @if (state$ | async; as state) {
+    @switch (state.status) {
+      @case ('loading') {
+        <p role="status" class="py-16 text-center text-ink-muted">Loading book...</p>
+      }
+      @case ('not-found') {
+        <app-request-error
+          title="Book not found"
+          message="The requested book could not be found."
+          [retryable]="false"
+        />
+      }
+      @case ('error') {
+        <app-request-error title="Unable to load book" (retry)="retry()" />
+      }
+      @case ('success') {
+        <article class="grid gap-8 rounded-lg bg-surface p-6 shadow-md md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+          <div class="aspect-[3/4] overflow-hidden rounded">
+            <app-book-cover [src]="state.book.cover" [alt]="state.book.title" />
+          </div>
+          <div class="min-w-0 break-words">
+            <h1 class="mb-2 text-3xl font-bold text-accent">{{ state.book.title }}</h1>
+            @if (state.book.subtitle) {
+              <p class="mb-4 text-xl text-ink-muted">{{ state.book.subtitle }}</p>
+            }
+            <p class="mb-6 text-lg text-ink">{{ state.book.author }}</p>
+            <dl class="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-3 text-ink">
+              <dt class="font-semibold">ISBN</dt>
+              <dd>{{ state.book.isbn }}</dd>
+              <dt class="font-semibold">Publisher</dt>
+              <dd>{{ state.book.publisher }}</dd>
+              <dt class="font-semibold">Pages</dt>
+              <dd>{{ state.book.numPages }}</dd>
+              <dt class="font-semibold">Price</dt>
+              <dd>{{ state.book.price }}</dd>
+            </dl>
+            <h2 class="mb-3 mt-8 text-xl font-semibold text-ink">Description</h2>
+            <p class="whitespace-pre-line text-ink">{{ state.book.abstract }}</p>
+          </div>
+        </article>
+      }
+    }
+  }
+</div>

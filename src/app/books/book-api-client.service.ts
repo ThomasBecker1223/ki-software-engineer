@@ -1,13 +1,22 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from './book';
+import { BOOK_API_URL } from './book-api.config';
+import { EXPECTED_NOT_FOUND } from '../shared/http-error.interceptor';
 
 @Injectable({ providedIn: 'root' })
 export class BookApiClient {
-  private readonly apiUrl = 'http://localhost:4730/books';
+  constructor(
+    private http: HttpClient,
+    @Inject(BOOK_API_URL) private readonly apiUrl: string
+  ) {}
 
-  constructor(private http: HttpClient) {}
+  getBook(id: string): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/${encodeURIComponent(id)}`, {
+      context: new HttpContext().set(EXPECTED_NOT_FOUND, true)
+    });
+  }
 
   getBooks(pageSize: number = 10, searchTerm?: string): Observable<Book[]> {
     let params = new HttpParams().set('_limit', pageSize.toString());

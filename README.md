@@ -12,6 +12,10 @@
   <br>
 </p>
 
+## Architecture
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the tech stack, dependencies, application structure, data flow, architectural risk assessment, and evolution priorities.
+
 ## Local Development
 
 | Command       | Description                                      |
