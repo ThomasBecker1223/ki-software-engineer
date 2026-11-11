@@ -1,11 +1,11 @@
 name: Issue Analysis with OpenAI
- 
+
 on:
   issues:
     types: [opened, edited]
   issue_comment:
     types: [created]
- 
+
 jobs:
   analyze-issue:
     runs-on: ubuntu-24.04
@@ -13,11 +13,20 @@ jobs:
     permissions:
       contents: read
       issues: write
- 
+
     steps:
+      - name: Validate OpenAI API key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::Missing OPENAI_API_KEY. Add it under Settings > Secrets and variables > Actions > Repository secrets."
+            exit 1
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v4
- 
+
       - name: Configure Codex GitHub API access
         env:
           CODEX_CI_HOME: ${{ runner.temp }}/codex-issue-analysis
@@ -26,17 +35,17 @@ jobs:
           cat > "$CODEX_CI_HOME/config.toml" <<'EOF'
           [features]
           network_proxy = true
- 
+
           [permissions.issue-analysis]
           extends = ":workspace"
- 
+
           [permissions.issue-analysis.network]
           enabled = true
- 
+
           [permissions.issue-analysis.network.domains]
           "api.github.com" = "allow"
           EOF
- 
+
       - name: Analyze Issue with OpenAI
         uses: openai/codex-action@v1
         env:
@@ -51,4 +60,3 @@ jobs:
                          
             REPOSITORY: ${{ github.repository }}
             ISSUE_NUMBER: ${{ github.event.issue.number || github.event.comment.issue_url }}
- 
