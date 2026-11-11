@@ -1,4 +1,4 @@
-yname: Issue Implementation Preparation
+name: Issue Implementation Preparation
 
 on:
  issues:
