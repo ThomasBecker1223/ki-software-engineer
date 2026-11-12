@@ -79,6 +79,7 @@ jobs:
           codex-home: ${{ runner.temp }}/codex-issue-implementation
           permission-profile: issue-implementation
           safety-strategy: drop-sudo
+          model: 'gpt-5.6-luna'
           prompt: |
             Use the ci-se-green skill. Read and follow
             .agents/skills/ci-se-green/SKILL.md and its coding guidelines.
