@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-book-cover',
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex h-full w-full items-center justify-center overflow-hidden bg-muted-surface' },
   template: `
     @if (src && !failed) {

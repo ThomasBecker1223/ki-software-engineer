@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, catchError, combineLatest, map, of, startWith, switchMap, timer } from 'rxjs';
 import { Book } from './book';
@@ -11,9 +11,9 @@ type BookListState = { status: 'loading' | 'error' } | { status: 'success'; book
 
 @Component({
   selector: 'app-book-list',
-  standalone: true,
   imports: [AsyncPipe, FormsModule, BookItemComponent, RequestErrorComponent],
-  templateUrl: './book-list.component.html'
+  templateUrl: './book-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookListComponent {
   private readonly bookApiClient = inject(BookApiClient);

@@ -1,13 +1,13 @@
-import { Component, Input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-request-error',
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div role="alert" class="rounded-lg bg-muted-surface p-8">
-      <h1 class="mb-2 text-2xl font-bold text-ink">{{ title }}</h1>
-      <p class="text-ink-muted">{{ message }}</p>
-      @if (retryable) {
+      <h1 class="mb-2 text-2xl font-bold text-ink">{{ title() }}</h1>
+      <p class="text-ink-muted">{{ message() }}</p>
+      @if (retryable()) {
         <button
           type="button"
           (click)="retry.emit()"
@@ -20,8 +20,8 @@ import { Component, Input, output } from '@angular/core';
   `
 })
 export class RequestErrorComponent {
-  @Input({ required: true }) title = '';
-  @Input() message = 'Please try again.';
-  @Input() retryable = true;
+  readonly title = input.required<string>();
+  readonly message = input('Please try again.');
+  readonly retryable = input(true);
   readonly retry = output<void>();
 }

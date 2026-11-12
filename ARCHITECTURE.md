@@ -34,7 +34,7 @@ The application uses standalone components rather than NgModules. Code is groupe
 | [src/main.ts](src/main.ts)                                                             | Bootstraps the root `App` component using `bootstrapApplication` and `appConfig`.                                      |
 | [src/app/app.config.ts](src/app/app.config.ts)                                         | Registers browser error listeners, zone-based change detection, routing, `HttpClient`, and animations.                 |
 | [src/app/app.ts](src/app/app.ts), [app.html](src/app/app.html)                         | Application shell: header, router outlet, and footer.                                                                  |
-| [src/app/app.routes.ts](src/app/app.routes.ts)                                         | Maps `/` to the list and `/books/:id` to details; the wildcard redirects to the list.                                  |
+| [src/app/app.routes.ts](src/app/app.routes.ts)                                         | Lazily loads the list at `/` and details at `/books/:id`; the wildcard redirects to the list.                          |
 | [src/app/books/book-list.component.ts](src/app/books/book-list.component.ts)           | Owns loading, search, and book-list state; requests data and renders loading, empty, and list views.                   |
 | [src/app/books/book-item.component.ts](src/app/books/book-item.component.ts)           | Displays one book received through an input, including cover fallback, title, subtitle, author, and ISBN.              |
 | [src/app/books/book-details.component.ts](src/app/books/book-details.component.ts)     | Owns route-driven loading, expected 404 handling, and retry; renders bibliographic details in an external template.    |
@@ -67,7 +67,7 @@ flowchart TD
     Details --> Cover
 ```
 
-On initialization, `BookListComponent` requests books through the injected `BookApiClient`. The service sends `GET http://localhost:4730/books` with `_limit` set to the component's `pageSize` input, which defaults to 10. Search adds a `q` query parameter; filtering is delegated to the API. There is no pagination offset or page navigation in the current UI.
+The shell and feature components use `OnPush` change detection. The router loads the list and details as separate route chunks. On initialization, `BookListComponent` requests books through the injected `BookApiClient`. The service sends `GET http://localhost:4730/books` with `_limit` set to the component's `pageSize` input, which defaults to 10. Search adds a `q` query parameter; filtering is delegated to the API. There is no pagination offset or page navigation in the current UI.
 
 The search input uses `FormsModule` and explicit model-change events. Search and page-size subjects feed one list state stream. An outer `switchMap` cancels previous debounce/HTTP work immediately; nonempty searches wait 300 ms, while clearing and retrying load immediately. Page-size changes reload the list. The external template renders loading, error, or success states and tracks books by ID.
 

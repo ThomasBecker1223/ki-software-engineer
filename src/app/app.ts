@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ThemeSelectorComponent } from './shared/theme-selector.component';
 
@@ -6,8 +6,7 @@ import { ThemeSelectorComponent } from './shared/theme-selector.component';
   selector: 'app-root',
   imports: [RouterOutlet, ThemeSelectorComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class App {
-  protected title = 'BookMonkey';
-}
+export class App {}

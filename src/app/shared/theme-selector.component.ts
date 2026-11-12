@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ThemePreference, ThemeService } from './theme.service';
 
 @Component({
   selector: 'app-theme-selector',
-  standalone: true,
-  templateUrl: './theme-selector.component.html'
+  templateUrl: './theme-selector.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThemeSelectorComponent {
   protected readonly theme = inject(ThemeService);

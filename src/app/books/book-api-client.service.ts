@@ -1,5 +1,5 @@
 import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from './book';
 import { BOOK_API_URL } from './book-api.config';
@@ -7,10 +7,8 @@ import { EXPECTED_NOT_FOUND } from '../shared/http-error.interceptor';
 
 @Injectable({ providedIn: 'root' })
 export class BookApiClient {
-  constructor(
-    private http: HttpClient,
-    @Inject(BOOK_API_URL) private readonly apiUrl: string
-  ) {}
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = inject(BOOK_API_URL);
 
   getBook(id: string): Observable<Book> {
     return this.http.get<Book>(`${this.apiUrl}/${encodeURIComponent(id)}`, {

@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, distinctUntilChanged, map, of, startWith, Subject, switchMap } from 'rxjs';
 import { Book } from './book';
@@ -12,9 +12,9 @@ type BookDetailsState = { status: 'loading' | 'not-found' | 'error' } | { status
 
 @Component({
   selector: 'app-book-details',
-  standalone: true,
   imports: [AsyncPipe, RouterLink, BookCoverComponent, RequestErrorComponent],
-  templateUrl: './book-details.component.html'
+  templateUrl: './book-details.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookDetailsComponent {
   private readonly route = inject(ActivatedRoute);
